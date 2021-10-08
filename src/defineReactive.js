@@ -28,8 +28,8 @@ export default function defineReactive(obj, key, val) {
       console.log(`----- getter end -------`)
       
       dep.depend(); // 依赖收集
-      if(childOb) {
-          childOb.dep.depend();
+      if (childOb) {
+        childOb.dep.depend();
       }
       
       
@@ -46,4 +46,20 @@ export default function defineReactive(obj, key, val) {
     }
   })
   
+}
+
+
+/**
+ * Set a property on an object. Adds the new property and
+ * triggers change notification if the property doesn't
+ * already exist.
+ */
+export function set(target, key, val = '') {
+  if (arguments.length !== 3) {
+    return;
+  }
+  const ob = target.__ob__
+  defineReactive(target, key, val)
+  ob.dep.notify()
+  return val
 }

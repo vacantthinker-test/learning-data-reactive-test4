@@ -1,5 +1,6 @@
 import observe from "./observe";
 import Watcher from "./Watcher";
+import {set} from "./defineReactive";
 
 console.log('vue2 数据响应式原理')
 
@@ -15,7 +16,7 @@ const data = {
     meat: 20 // 肉类
   },
   total: 0, // 总计
-  drinkType:[
+  drinkType: [
     {name: '0可乐'},
     {name: '1雪碧'},
     {name: '2橙汁'},
@@ -49,6 +50,10 @@ const methods = {
  */
 function updateTotal() {
   data.total = data.dinner.rice + data.dinner.meat;
+  if (data.dinner.juice) {
+    data.total += data.dinner.juice
+  }
+  
 }
 
 /**
@@ -82,15 +87,16 @@ function renderFunc() {
 </table>
 `
 }
+
 updateTotal() // 初始化更新total
 renderFunc() // 初始化渲染
 // click事件监听
-document.getElementById('app').addEventListener('click', function(e) {
+document.getElementById('app').addEventListener('click', function (e) {
   const value = e.target.attributes["@click"].value; // incrementRice
   console.log(value)
   let method = methods[value] // 根据incrementRice, 找到对应的方法, 然后执行该方法
-  if(method) {
-      method() // data.dinner.rice++;
+  if (method) {
+    method() // data.dinner.rice++;
   }
 })
 //----------------------------------------------
@@ -115,9 +121,12 @@ new Watcher(data, 'dinner.meat', function (...args) {
 // 5+20 -》 25.
 // 10 + 20 -> 30
 
-
-
-
+set(data.dinner, 'juice', 2)
+//data.dinner.juice = 5
+new Watcher(data, 'dinner.juice', function (...args) {
+  updateTotal()
+  renderFunc()
+})
 
 
 

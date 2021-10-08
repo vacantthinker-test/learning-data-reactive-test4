@@ -27,7 +27,7 @@ export default class Dep {
   /**
    * 依赖通知
    */
-  notify(){
+  notify() {
     const slice = this.subs.slice();
     for (let i = 0; i < slice.length; i++) {
       slice[i].update() // 执行watcher的update方法

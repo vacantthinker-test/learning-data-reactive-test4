@@ -28,8 +28,8 @@ methodsNeedChange.forEach(method => {
         break
     }
     // observeArray从哪里来?
-    if(inserted.length > 0) {
-        ob.observeArray(inserted)
+    if (inserted.length > 0) {
+      ob.observeArray(inserted)
     }
     
     
